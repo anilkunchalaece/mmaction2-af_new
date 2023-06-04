@@ -5,13 +5,13 @@ _base_ = [
 
 # dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_frames_dataset/train'
-data_root_val = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_frames_dataset/val'
-data_root_test = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/test'
+data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/train'
+data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/val'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_frames_dataset/train_annotation.txt'
-ann_file_val = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_frames_dataset/val_annotation.txt'
-ann_file_test = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/test_annotation.txt'
+ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/train_annotation.txt'
+ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/val_annotation.txt'
+ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/test_annotation.txt'
 
 
 # model settings

@@ -5,13 +5,13 @@ _base_ = [
 
 # dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/train'
-data_root_val = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/val'
-data_root_test = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/test'
+data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/train'
+data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/val'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/train_annotation.txt'
-ann_file_val = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/val_annotation.txt'
-ann_file_test = '/home/akunchala/Documents/PhDStuff/action_tracklet_parser/kth_tracklets_dataset/test_annotation.txt'
+ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/train_annotation.txt'
+ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/val_annotation.txt'
+ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_tracklets_dataset/test_annotation.txt'
 
 
 # model settings
@@ -48,8 +48,9 @@ file_client_args = dict(io_backend='disk')
 train_pipeline = [
     dict(type='SampleFrames', clip_len=16, frame_interval=1, num_clips=1, start_index=0),
     dict(type='RawFrameDecode', **file_client_args),
-    dict(type='Resize', scale=(-1, 128)),
-    dict(type='RandomCrop', size=112),
+    # dict(type='Resize', scale=(-1, 128)),
+    dict(type='Resize', scale=(112, 112), keep_ratio=False),
+    # dict(type='RandomCrop', size=112),
     dict(type='Flip', flip_ratio=0.5),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
@@ -64,8 +65,9 @@ val_pipeline = [
         test_mode=True,
         start_index=0),
     dict(type='RawFrameDecode', **file_client_args),
-    dict(type='Resize', scale=(-1, 128)),
-    dict(type='CenterCrop', crop_size=112),
+    # dict(type='Resize', scale=(-1, 128)),
+    # dict(type='CenterCrop', crop_size=112),
+    dict(type='Resize', scale=(112, 112), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -79,8 +81,9 @@ test_pipeline = [
         start_index=0,
         test_mode=True),
     dict(type='RawFrameDecode', **file_client_args),
-    dict(type='Resize', scale=(-1, 128)),
-    dict(type='CenterCrop', crop_size=112),
+    # dict(type='Resize', scale=(-1, 128)),
+    # dict(type='CenterCrop', crop_size=112),
+    dict(type='Resize', scale=(112, 112), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
