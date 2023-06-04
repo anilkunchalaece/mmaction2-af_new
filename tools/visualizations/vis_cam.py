@@ -30,7 +30,7 @@ def parse_args():
     parser.add_argument(
         '--target-layer-name',
         type=str,
-        default='backbone/layer4/1/relu',
+        default='backbone/conv5b',
         help='GradCAM target layer name')
     parser.add_argument('--out-filename', default=None, help='output filename')
     parser.add_argument('--fps', default=5, type=int)
@@ -172,6 +172,8 @@ def main():
 
     # Build the recognizer from a config file and checkpoint file/url
     model = init_recognizer(cfg, args.checkpoint, device=args.device)
+
+    print(model)
 
     inputs = build_inputs(model, args.video, use_frames=args.use_frames)
     gradcam = GradCAM(model, args.target_layer_name)
