@@ -5,13 +5,13 @@ _base_ = [
 
 # dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/train'
-data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/val'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/test'
+data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_frames_dataset/train'
+data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_frames_dataset/val'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_frames_dataset/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/train_annotation.txt'
-ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/val_annotation.txt'
-ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/kth_frames_dataset/test_annotation.txt'
+ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_frames_dataset/train_annotation.txt'
+ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_frames_dataset/val_annotation.txt'
+ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_frames_dataset/test_annotation.txt'
 
 
 # model settings
@@ -28,7 +28,7 @@ model = dict(
         init_std=0.005),
     cls_head=dict(
         type='I3DHead',
-        num_classes=6, # changed the no of classes 101 (UCF-101) to 6 (KTH)
+        num_classes=7, # changed the no of classes 101 (UCF-101) to 6 (KTH)
         in_channels=4096,
         spatial_type=None,
         dropout_ratio=0.5,
