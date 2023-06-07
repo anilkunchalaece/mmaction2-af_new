@@ -5,13 +5,13 @@ _base_ = [
 
 # dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_tracklets_dataset/train'
-data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_tracklets_dataset/val'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_tracklets_dataset/test'
+data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/train'
+data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/val'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_tracklets_dataset/train_annotation.txt'
-ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_tracklets_dataset/val_annotation.txt'
-ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_tracklets_dataset/test_annotation.txt'
+ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/train_annotation.txt'
+ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/val_annotation.txt'
+ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/test_annotation.txt'
 
 # model settings
 model = dict(
