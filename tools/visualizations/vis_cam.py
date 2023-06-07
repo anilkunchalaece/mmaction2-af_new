@@ -30,10 +30,10 @@ def parse_args():
     parser.add_argument(
         '--target-layer-name',
         type=str,
-        default='backbone/conv5b',
+        default='backbone/conv5b/activate',
         help='GradCAM target layer name')
     parser.add_argument('--out-filename', default=None, help='output filename')
-    parser.add_argument('--fps', default=5, type=int)
+    parser.add_argument('--fps', default=30, type=int)
     parser.add_argument(
         '--cfg-options',
         nargs='+',
@@ -96,7 +96,7 @@ def build_inputs(model: nn.Module,
     if use_frames:
         filename_tmpl = cfg.test_dataloader.dataset.get(
             'filename_tmpl', 'img_{:05}.jpg')
-        start_index = cfg.test_dataloader.dataset.get('start_index', 1)
+        start_index = cfg.test_dataloader.dataset.get('start_index', 0)
         data = dict(
             frame_dir=video_path,
             total_frames=len(os.listdir(video_path)),

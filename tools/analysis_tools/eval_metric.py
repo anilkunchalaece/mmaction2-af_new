@@ -5,6 +5,9 @@ import mmengine
 from mmengine import Config, DictAction
 from mmengine.evaluator import Evaluator
 from mmengine.registry import init_default_scope
+from mmaction.evaluation.functional import (get_weighted_score,
+                                            mean_class_accuracy,
+                                            top_k_accuracy)
 
 
 def parse_args():
@@ -36,7 +39,14 @@ def main():
     init_default_scope(cfg.get('default_scope', 'mmaction'))
 
     data_samples = mmengine.load(args.pkl_results)
-
+    
+    cfg.test_evaluator = dict(
+                    type='AccMetric',
+                    metric_options=dict(
+                        top_k_accuracy=dict(topk=(1, 2, 3))
+                        ),
+                    metric_list= ('top_k_accuracy', 'mean_class_accuracy')
+                        )
     evaluator = Evaluator(cfg.test_evaluator)
     eval_results = evaluator.offline_evaluate(data_samples)
     print(eval_results)
