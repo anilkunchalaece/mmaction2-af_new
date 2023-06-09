@@ -1,13 +1,11 @@
 _base_ = [
-    '../../_base_/models/i3d_r50.py', '../../_base_/schedules/sgd_100e.py',
-    '../../_base_/default_runtime.py'
+    '../../_base_/models/slowfast_r50.py', '../../_base_/default_runtime.py'
 ]
-
-# dataset settings
+#dataset settings
 dataset_type = 'RawframeDataset'
 data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/train'
 data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/val'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/test'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
 ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/train_annotation.txt'
 ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/val_annotation.txt'
@@ -17,24 +15,38 @@ ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_datase
 model = dict(
     type='Recognizer3D',
     backbone=dict(
-        type='ResNet3d',
-        pretrained2d=None,
-        pretrained= None,
-        depth=50,
-        conv1_kernel=(5, 7, 7),
-        conv1_stride_t=2,
-        pool1_stride_t=2,
-        conv_cfg=dict(type='Conv3d'),
-        norm_eval=False,
-        inflate=((1, 1, 1), (1, 0, 1, 0), (1, 0, 1, 0, 1, 0), (0, 1, 0)),
-        zero_init_residual=False),
+        type='ResNet3dSlowFast',
+        pretrained=None,
+        resample_rate=8,  # tau
+        speed_ratio=8,  # alpha
+        channel_ratio=8,  # beta_inv
+        slow_pathway=dict(
+            type='resnet3d',
+            depth=50,
+            pretrained=None,
+            lateral=True,
+            conv1_kernel=(1, 7, 7),
+            dilations=(1, 1, 1, 1),
+            conv1_stride_t=1,
+            pool1_stride_t=1,
+            inflate=(0, 0, 1, 1),
+            norm_eval=False),
+        fast_pathway=dict(
+            type='resnet3d',
+            depth=50,
+            pretrained=None,
+            lateral=False,
+            base_channels=8,
+            conv1_kernel=(5, 7, 7),
+            conv1_stride_t=1,
+            pool1_stride_t=1,
+            norm_eval=False)),
     cls_head=dict(
-        type='I3DHead',
+        type='SlowFastHead',
+        in_channels=2304,  # 2048+256
         num_classes=7,
-        in_channels=2048,
         spatial_type='avg',
         dropout_ratio=0.5,
-        init_std=0.01,
         average_clips='prob'),
     data_preprocessor=dict(
         type='ActionDataPreprocessor',
@@ -42,18 +54,12 @@ model = dict(
         std=[58.395, 57.12, 57.375],
         format_shape='NCTHW'))
 
-
 file_client_args = dict(io_backend='disk')
 train_pipeline = [
-    dict(type='SampleFrames', clip_len=32, frame_interval=2, num_clips=1, start_index=0),
+    dict(type='SampleFrames', clip_len=32, frame_interval=2, num_clips=1),
     dict(type='RawFrameDecode', **file_client_args),
     dict(type='Resize', scale=(-1, 256)),
-    dict(
-        type='MultiScaleCrop',
-        input_size=224,
-        scales=(1, 0.8),
-        random_crop=False,
-        max_wh_scale_gap=0),
+    dict(type='RandomResizedCrop'),
     dict(type='Resize', scale=(224, 224), keep_ratio=False),
     dict(type='Flip', flip_ratio=0.5),
     dict(type='FormatShape', input_format='NCTHW'),
@@ -80,13 +86,11 @@ test_pipeline = [
         num_clips=10,
         test_mode=True),
     dict(type='RawFrameDecode', **file_client_args),
-    # dict(type='DecordDecode'),
     dict(type='Resize', scale=(-1, 256)),
     dict(type='ThreeCrop', crop_size=256),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
-
 train_dataloader = dict(
     batch_size=8,
     num_workers=8,
@@ -97,7 +101,6 @@ train_dataloader = dict(
         ann_file=ann_file_train,
         data_prefix=dict(img=data_root),
         pipeline=train_pipeline))
-
 val_dataloader = dict(
     batch_size=8,
     num_workers=8,
@@ -129,10 +132,26 @@ train_cfg = dict(
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 
-default_hooks = dict(checkpoint=dict(interval=5, max_keep_ckpts=5))
+optim_wrapper = dict(
+    optimizer=dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=1e-4),
+    clip_grad=dict(max_norm=40, norm_type=2))
 
-# Default setting for scaling LR automatically
-#   - `enable` means enable scaling LR automatically
-#       or not by default.
-#   - `base_batch_size` = (8 GPUs) x (8 samples per GPU).
-auto_scale_lr = dict(enable=False, base_batch_size=240)
+param_scheduler = [
+    dict(
+        type='LinearLR',
+        start_factor=0.1,
+        by_epoch=True,
+        begin=0,
+        end=34,
+        convert_to_iter_based=True),
+    dict(
+        type='CosineAnnealingLR',
+        T_max=45,
+        eta_min=0,
+        by_epoch=True,
+        begin=0,
+        end=45)
+]
+
+default_hooks = dict(
+    checkpoint=dict(interval=4, max_keep_ckpts=3), logger=dict(interval=100))

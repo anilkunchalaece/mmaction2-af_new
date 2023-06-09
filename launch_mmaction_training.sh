@@ -1,12 +1,12 @@
 #!/bin/sh
 
-#SBATCH --job-name=MMACT_SF
+#SBATCH --job-name=MMACT_FR
 #SBATCH --mem=40000
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
-#SBATCH --output=mmaction_test_sf.log
-#SBATCH --error=mmaction_test_sf_error.log
-#SBATCH --partition=MEDIUM-G2
+#SBATCH --output=mmaction_test_fr.log
+#SBATCH --error=mmaction_test_sf_fr.log
+#SBATCH --partition=LARGE-G2
 
 # source /home/ICTDOMAIN/d20125529/action_tracklet_parser/venv/bin/activate
 . /home/ICTDOMAIN/d20125529/action_tracklet_parser/venv3_8/bin/activate
@@ -47,6 +47,11 @@ which python
 #           work_dirs/c3d_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
 #           --dump c3d_train_frames_test_tubelets.pkl  
 
+# Train from scratch on frames and test on frames
+# python -u tools/test.py configs/action_tracklets/c3d/c3d_frames_ntu_rgb_from_scratch_test_frames_config.py \
+#           work_dirs/c3d_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
+#           --dump c3d_train_frames_test_frames.pkl  
+
 # Train from scratch on tubelets and test on tubelets
 # python -u tools/test.py configs/action_tracklets/c3d/c3d_tubelets_ntu_rgb_from_scratch_test_tubelets_config.py \
 #             work_dirs/c3d_tubelets_ntu_rgb_from_scratch_config/best_acc_top1_epoch_32.pth \
@@ -72,21 +77,25 @@ which python
 # python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_config.py
 
 
-python -u tools/test.py configs/action_tracklets/i3d/i3d_frames_ntu_rgb_from_scratch_test_tubelets_config.py \
-        work_dirs/i3d_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
-        --dump i3d_train_frames_test_tubelets.pkl 
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_frames_ntu_rgb_from_scratch_test_tubelets_config.py \
+#         work_dirs/i3d_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
+#         --dump i3d_train_frames_test_tubelets.pkl 
 
-python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_test_tubelets_config.py \
-        work_dirs/i3d_tubelets_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
-        --dump i3d_train_tubelets_test_tubelets.pkl
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_frames_ntu_rgb_from_scratch_test_frames_config.py \
+#         work_dirs/i3d_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
+#         --dump i3d_train_frames_test_frames.pkl 
 
-python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_test_tubelets_config.py \
-        work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_config/best_acc_top1_epoch_8.pth \
-        --dump i3d_kintetics_finetune_test_tubelets.pkl
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_test_tubelets_config.py \
+#         work_dirs/i3d_tubelets_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
+#         --dump i3d_train_tubelets_test_tubelets.pkl
 
-python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_test_tubelets_config.py \
-        work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_frames_config/best_acc_top1_epoch_28.pth \
-        --dump i3d_ntu_rgb_frames_finetune_test_tubelets.pkl
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_test_tubelets_config.py \
+#         work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_config/best_acc_top1_epoch_8.pth \
+#         --dump i3d_kintetics_finetune_test_tubelets.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_test_tubelets_config.py \
+#         work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_frames_config/best_acc_top1_epoch_28.pth \
+#         --dump i3d_ntu_rgb_frames_finetune_test_tubelets.pkl
 
 
 #### SlowFast ######
@@ -102,6 +111,10 @@ python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transf
 #         work_dirs/slowfast_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
 #         --dump slowfast_train_frames_test_tubelets.pkl 
 
+# python -u tools/test.py configs/action_tracklets/slowfast/slowfast_frames_ntu_rgb_from_scratch_test_frames_config.py \
+#         work_dirs/slowfast_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
+#         --dump slowfast_train_frames_test_frames.pkl 
+
 # python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_from_scratch_test_tubelets_config.py \
 #         work_dirs/slowfast_tubelets_ntu_rgb_from_scratch_config/best_acc_top1_epoch_36.pth \
 #         --dump slowfast_train_tubelets_test_tubelets.pkl
@@ -110,6 +123,6 @@ python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transf
 #         work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_config/best_acc_top1_epoch_36.pth \
 #         --dump slowfast_kintetics_finetune_test_tubelets.pkl
 
-python -u configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_ntu_rgb_frames_test_tubelets_config.py \
+python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_ntu_rgb_frames_test_tubelets_config.py \
         work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_ntu_rgb_frames_config/best_acc_top1_epoch_42.pth \
         --dump slowfast_ntu_rgb_frames_finetune_test_tubelets.pkl
