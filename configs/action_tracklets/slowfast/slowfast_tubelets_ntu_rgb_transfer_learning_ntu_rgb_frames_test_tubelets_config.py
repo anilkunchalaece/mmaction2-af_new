@@ -3,9 +3,9 @@ _base_ = [
 ]
 #dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/train'
-data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/val'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/test'
+data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/train'
+data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/val'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
 ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/train_annotation.txt'
 ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/val_annotation.txt'
@@ -58,8 +58,8 @@ file_client_args = dict(io_backend='disk')
 train_pipeline = [
     dict(type='SampleFrames', clip_len=32, frame_interval=2, num_clips=1),
     dict(type='RawFrameDecode', **file_client_args),
-    dict(type='Resize', scale=(-1, 256)),
-    dict(type='RandomResizedCrop'),
+    # dict(type='Resize', scale=(-1, 256)),
+    # dict(type='RandomResizedCrop'),
     dict(type='Resize', scale=(224, 224), keep_ratio=False),
     dict(type='Flip', flip_ratio=0.5),
     dict(type='FormatShape', input_format='NCTHW'),
@@ -73,8 +73,9 @@ val_pipeline = [
         num_clips=1,
         test_mode=True),
     dict(type='RawFrameDecode', **file_client_args),
-    dict(type='Resize', scale=(-1, 256)),
-    dict(type='CenterCrop', crop_size=224),
+    # dict(type='Resize', scale=(-1, 256)),
+    # dict(type='CenterCrop', crop_size=224),
+    dict(type='Resize', scale=(224, 224), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -86,8 +87,9 @@ test_pipeline = [
         num_clips=10,
         test_mode=True),
     dict(type='RawFrameDecode', **file_client_args),
-    dict(type='Resize', scale=(-1, 256)),
-    dict(type='ThreeCrop', crop_size=256),
+    # dict(type='Resize', scale=(-1, 256)),
+    # dict(type='ThreeCrop', crop_size=256),
+    dict(type='Resize', scale=(224, 224), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -120,7 +122,7 @@ test_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         ann_file=ann_file_test,
-        data_prefix=dict(img=data_root_val),
+        data_prefix=dict(img=data_root_test),
         pipeline=test_pipeline,
         test_mode=True))
 
@@ -155,3 +157,6 @@ param_scheduler = [
 
 default_hooks = dict(
     checkpoint=dict(interval=4, max_keep_ckpts=3), logger=dict(interval=100))
+
+# load_from = "https://download.openmmlab.com/mmaction/v1.0/recognition/slowfast/slowfast_r50_8xb8-4x16x1-256e_kinetics400-rgb/slowfast_r50_8xb8-4x16x1-256e_kinetics400-rgb_20220901-701b0f6f.pth"
+load_from = "/home/ICTDOMAIN/d20125529/mmaction2-af_new/work_dirs/slowfast_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth"

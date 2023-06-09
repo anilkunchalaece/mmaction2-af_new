@@ -5,7 +5,7 @@ _base_ = [
 dataset_type = 'RawframeDataset'
 data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/train'
 data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/val'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/frames/test'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/tracklets/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
 ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/train_annotation.txt'
 ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/ntu_rgb_dataset_frames_and_tracklets/val_annotation.txt'
@@ -120,7 +120,7 @@ test_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         ann_file=ann_file_test,
-        data_prefix=dict(img=data_root_val),
+        data_prefix=dict(img=data_root_test),
         pipeline=test_pipeline,
         test_mode=True))
 
