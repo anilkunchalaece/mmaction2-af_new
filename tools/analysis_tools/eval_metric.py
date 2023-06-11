@@ -5,9 +5,9 @@ import mmengine
 from mmengine import Config, DictAction
 from mmengine.evaluator import Evaluator
 from mmengine.registry import init_default_scope
-from mmaction.evaluation.functional import (get_weighted_score,
-                                            mean_class_accuracy,
-                                            top_k_accuracy)
+# from mmaction.evaluation.functional import (get_weighted_score,
+#                                             mean_class_accuracy,
+#                                             top_k_accuracy)
 
 
 def parse_args():

@@ -54,7 +54,7 @@ train_pipeline = [
     #     scales=(1, 0.8),
     #     random_crop=False,
     #     max_wh_scale_gap=0),
-    dict(type='Resize', scale=(224, 224), keep_ratio=False),
+    dict(type='Resize', scale=(256, 256), keep_ratio=False),
     dict(type='Flip', flip_ratio=0.5),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
@@ -70,7 +70,7 @@ val_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='CenterCrop', crop_size=224),
-    dict(type='Resize', scale=(224, 224), keep_ratio=False),
+    dict(type='Resize', scale=(256, 256), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -85,7 +85,7 @@ test_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='ThreeCrop', crop_size=256),
-    dict(type='Resize', scale=(224, 224), keep_ratio=False),
+    dict(type='Resize', scale=(256, 256), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
