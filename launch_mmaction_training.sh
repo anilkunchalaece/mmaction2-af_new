@@ -93,25 +93,26 @@ which python
 # python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config.py
 
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_16x16.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_16x16.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_32x32.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_32x32.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_64x64.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_64x64.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_128x128.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_128x128.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_256x256.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_256x256.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_16x16.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_16x16.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_32x32.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_32x32.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_64x64.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_64x64.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_128x128.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_128x128.py
 
-python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_256x256.py
+# python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_256x256.py
+
 
 # python -u tools/test.py configs/action_tracklets/i3d/i3d_frames_ntu_rgb_from_scratch_test_tubelets_config.py \
 #         work_dirs/i3d_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
@@ -141,7 +142,45 @@ python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_trans
 #     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config/best_acc_top1_epoch_20.pth \
 #     --dump i3d_kintetics_finetune_test_tubelets_50_perc.pkl
 
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_16x16.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_16x16/best_acc_top1_epoch_42.pth \
+#     --dump i3d_ntu_rgb_frames_finetune_test_tubelets_50_perc_16x16.pkl
 
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_32x32.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_32x32/best_acc_top1_epoch_42.pth \
+#     --dump i3d_ntu_rgb_frames_finetune_test_tubelets_50_perc_32x32.pkl
+
+python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_64x64.py \
+    work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_64x64/best_acc_top1_epoch_42.pth \
+    --dump i3d_ntu_rgb_frames_finetune_test_tubelets_50_perc_64x64.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_128x128.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_128x128/best_acc_top1_epoch_42.pth \
+#     --dump i3d_ntu_rgb_frames_finetune_test_tubelets_50_perc_128x128.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_256x256.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_frames_50_perc_data_config_256x256/best_acc_top1_epoch_44.pth \
+#     --dump i3d_ntu_rgb_frames_finetune_test_tubelets_50_perc_256x256.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_16x16.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_16x16/best_acc_top1_epoch_44.pth \
+#     --dump i3d_kintetics_finetune_test_tubelets_50_perc_16x16.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_32x32.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_32x32/best_acc_top1_epoch_38.pth \
+#     --dump i3d_kintetics_finetune_test_tubelets_50_perc_32x32.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_64x64.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_64x64/best_acc_top1_epoch_38.pth \
+#     --dump i3d_kintetics_finetune_test_tubelets_50_perc_64x64.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_128x128.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_128x128/best_acc_top1_epoch_44.pth \
+#     --dump i3d_kintetics_finetune_test_tubelets_50_perc_128x128.pkl
+
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_256x256.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_256x256/best_acc_top1_epoch_36.pth \
+#     --dump i3d_kintetics_finetune_test_tubelets_50_perc_256x256.pkl
 #### SlowFast ######
 # python -u tools/train.py configs/action_tracklets/slowfast/slowfast_frames_ntu_rgb_from_scratch_config.py
 
@@ -224,22 +263,22 @@ python -u tools/train.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_trans
 #     work_dirs/slowfast_tubelets_ntu_rgb_from_scratch_config_256x256/best_acc_top1_epoch_36.pth \
 #     --dump slowfast_train_tubelets_test_tubelets_256x256.pkl
 
-python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_16x16.py \
-    work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_16x16/best_acc_top1_epoch_40.pth \
-    --dump slowfast_kintetics_finetune_test_tubelets_50_perc_16x16.pkl
+# python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_16x16.py \
+#     work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_16x16/best_acc_top1_epoch_40.pth \
+#     --dump slowfast_kintetics_finetune_test_tubelets_50_perc_16x16.pkl
 
-python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_32x32.py \
-    work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_32x32/best_acc_top1_epoch_38.pth \
-    --dump slowfast_kintetics_finetune_test_tubelets_50_perc_32x32.pkl
+# python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_32x32.py \
+#     work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_32x32/best_acc_top1_epoch_38.pth \
+#     --dump slowfast_kintetics_finetune_test_tubelets_50_perc_32x32.pkl
 
-python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_64x64.py \
-    work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_64x64/best_acc_top1_epoch_42.pth \
-    --dump slowfast_kintetics_finetune_test_tubelets_50_perc_64x64.pkl
+# python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_64x64.py \
+#     work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_64x64/best_acc_top1_epoch_42.pth \
+#     --dump slowfast_kintetics_finetune_test_tubelets_50_perc_64x64.pkl
 
-python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_128x128.py \
-    work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_128x128/best_acc_top1_epoch_36.pth \
-    --dump slowfast_kintetics_finetune_test_tubelets_50_perc_128x128.pkl
+# python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_128x128.py \
+#     work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_128x128/best_acc_top1_epoch_36.pth \
+#     --dump slowfast_kintetics_finetune_test_tubelets_50_perc_128x128.pkl
 
-python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_256x256.py \
-    work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_256x256/best_acc_top1_epoch_42.pth \
-    --dump slowfast_kintetics_finetune_test_tubelets_50_perc_256x256.pkl
+# python -u tools/test.py configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_256x256.py \
+#     work_dirs/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_256x256/best_acc_top1_epoch_42.pth \
+#     --dump slowfast_kintetics_finetune_test_tubelets_50_perc_256x256.pkl
