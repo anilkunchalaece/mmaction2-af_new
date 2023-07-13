@@ -154,6 +154,11 @@ def main():
     print(F"Results are saved to {f_to_save}")
 
 def plot_graphs(f_name) :
+    font = {
+        # 'weight' : 'bold',
+        'size'   : 17}
+
+    matplotlib.rc('font', **font)
     with open(f_name) as fd :
         data = json.load(fd)
 
@@ -163,7 +168,7 @@ def plot_graphs(f_name) :
     i3d_kinetics_pretrain = {}
 
     for k,v in data.items() :
-        print(k)
+        # print(k)
         if k.find("slowfast_train_tubelets_test_tubelets_") != -1 :
             slowfast_tubelets_from_scratch[int(k.split("_")[-1].replace(".pkl","").split("x")[0])] = v
         elif k.find("slowfast_kintetics_finetune_test_tubelets_50_perc_") != -1 :
@@ -171,18 +176,19 @@ def plot_graphs(f_name) :
         elif k.find("i3d_train_tubelets_test_tubelets_") != -1 :
             i3d_tubelets_from_scratch[int(k.split("_")[-1].replace(".pkl","").split("x")[0])] = v
         elif k.find("i3d_kintetics_finetune_test_tubelets_50_perc_") != -1 :
-            print(k)
+            # print(k)
             i3d_kinetics_pretrain[int(k.split("_")[-1].replace(".pkl","").split("x")[0])] = v    
 
 
     fig, ax = plt.subplots(num="SlowFast")  # Adjust figure size as per your paper requirements
+
     df = pd.DataFrame.from_dict(slowfast_tubelets_from_scratch,orient='index')
     df = df.sort_index()
     print(df)
     df = df.rename(columns={"acc/top1": "top1", "acc/top3": "top3", "acc/mean1":"mAcc"})
     # df = df.drop(["16"])
-    df[["top1"]].plot(kind='line',ax=ax, linewidth=2.25, marker="*", markersize=8,linestyle="--", color='green')
-    df[["top3"]].plot(kind='line',ax=ax, linewidth=2.25, marker="o", markersize=8, linestyle="-.", color='green')
+    df[["top1"]].plot(kind='line',ax=ax, linewidth=3, marker="*", markersize=8,linestyle="--", color='green')
+    df[["top3"]].plot(kind='line',ax=ax, linewidth=3, marker="o", markersize=8, linestyle="-.", color='green')
 
     df = pd.DataFrame.from_dict(slowfast_kinetics_pretrain,orient='index')
     # df = df.drop(["16"])
@@ -194,7 +200,7 @@ def plot_graphs(f_name) :
     # df.plot(kind='scatter', )
     ax.grid(True, linestyle="--", alpha=0.5)
     # ax.set_ylim([0.6,1])
-    plt.xlabel("Image size", fontsize=14)
+    plt.xlabel("Image size")
     plt.legend(["tubelets-top1","tubelets-top3","pt-large-top1","pt-large-top3"])
     # plt.title("SlowFast")
 
@@ -219,7 +225,7 @@ def plot_graphs(f_name) :
     # df.plot(kind='scatter', )
     ax.grid(True, linestyle="--", alpha=0.5)
     # ax.set_ylim([0.6,1])
-    plt.xlabel("Image size", fontsize=14)
+    plt.xlabel("Image size")
     plt.legend(["tubelets-top1","tubelets-top3","pt-large-top1","pt-large-top3"])
 
     plt.show()
