@@ -52,6 +52,10 @@ def parse_args():
         default='none',
         help='job launcher')
     parser.add_argument('--local_rank', '--local-rank', type=int, default=0)
+
+    parser.add_argument('--test_data_root', help="Test data root directory")
+    parser.add_argument('--test_annotation', help="Annotation file for test data")
+
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
@@ -82,7 +86,14 @@ def merge_args(cfg, args):
             cfg.test_evaluator.append(dump_metric)
         else:
             cfg.test_evaluator = [cfg.test_evaluator, dump_metric]
-
+    
+    # ------------------ Test data paths ------------------------
+    if args.test_data_root is not None :
+        assert args.test_annotation, 'Test annotation file is not set'
+        cfg.data_root_test = args.test_data_root
+        cfg.ann_file_test = args.test_annotation
+        cfg.test_dataloader.dataset.data_prefix.img = args.test_data_root
+        cfg.test_dataloader.dataset.ann_file = args.test_annotation
     return cfg
 
 
@@ -90,7 +101,7 @@ def main():
     args = parse_args()
 
     # load config
-    cfg = Config.fromfile(args.config)
+    cfg = Config.fromfile(args.config, use_predefined_variables=False)
     cfg = merge_args(cfg, args)
     cfg.launcher = args.launcher
     if args.cfg_options is not None:
