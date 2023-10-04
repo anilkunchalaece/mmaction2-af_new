@@ -1,11 +1,11 @@
 #!/bin/sh
 
-#SBATCH --job-name=MMACT_RN
-#SBATCH --mem=40000
-#SBATCH --cpus-per-task=8
+#SBATCH --job-name=MMACT_SF
+#SBATCH --mem=60000
+#SBATCH --cpus-per-task=12
 #SBATCH --gres=gpu:1
-#SBATCH --output=mmaction_test_sf_nxn.log
-#SBATCH --error=mmaction_test_sf_error_nxn.log
+#SBATCH --output=sf_focal.log
+#SBATCH --error=sf_focal.log
 #SBATCH --partition=LARGE-G2
 
 # source /home/ICTDOMAIN/d20125529/action_tracklet_parser/venv/bin/activate
@@ -27,6 +27,32 @@ which python
 #     tsn_imagenet-pretrained-r50_8xb32-1x1x8-100e_kinetics400-rgb_20220906-2692d16c.pth \
 #     demo/demo.mp4 tools/data/kinetics/label_map_k400.txt
 
+######### Tubelet Dataset ########
+# python -u tools/train.py configs/tubelet_dataset/c3d/c3d_tubelet_dataset_config.py
+# python -u tools/train.py configs/tubelet_dataset/c3d/c3d_tubelet_dataset_focal_loss_config.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_config.py
+python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_config.py
+
+
+######### BBOX VARIATIONS ########
+# python -u tools/train.py configs/bbox_variations/slowfast/slowfast_frames_ntu_rgb_from_scratch_config.py
+
+# python -u tools/train.py configs/bbox_variations/slowfast/slowfast_tubelets_ntu_rgb_from_scratch_config.py
+
+# python -u tools/train.py configs/bbox_variations/slowfast/slowfast_tubelets_same_size_ntu_rgb_from_scratch_config.py
+
+# python tools/test.py configs/bbox_variations/slowfast/slowfast_frames_ntu_rgb_from_scratch_config.py \
+#     work_dirs/slowfast_frames_ntu_rgb_from_scratch_config/best_acc_top1_epoch_44.pth \
+#     --dump bbox_variations_slowfast_frames.pkl
+
+# python tools/test.py configs/bbox_variations/slowfast/slowfast_tubelets_ntu_rgb_from_scratch_config.py \
+#     work_dirs/slowfast_tubelets_ntu_rgb_from_scratch_config/best_acc_top1_epoch_40.pth \
+#     --dump bbox_variations_slowfast_tubelets.pkl
+
+# python tools/test.py configs/bbox_variations/slowfast/slowfast_tubelets_same_size_ntu_rgb_from_scratch_config.py \
+#     work_dirs/slowfast_tubelets_same_size_ntu_rgb_from_scratch_config/best_acc_top1_epoch_42.pth \
+#     --dump bbox_variations_slowfast_tubelets_samesize.pkl
 
 ###### C3D ##############
 
@@ -208,10 +234,9 @@ which python
 #     work_dirs/i3d_tubelets_ntu_rgb_from_scratch_config_128x128/best_acc_top1_epoch_44.pth \
 #     --dump i3d_train_tubelets_test_tubelets_128x128.pkl
 
-# TODO
-python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_config_256x256.py \
-    work_dirs/i3d_tubelets_ntu_rgb_from_scratch_config_256x256/best_acc_top1_epoch_42.pth \
-    --dump i3d_train_tubelets_test_tubelets_256x256.pkl
+# python -u tools/test.py configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_config_256x256.py \
+#     work_dirs/i3d_tubelets_ntu_rgb_from_scratch_config_256x256/best_acc_top1_epoch_42.pth \
+#     --dump i3d_train_tubelets_test_tubelets_256x256.pkl
 
 #### SlowFast ######
 # python -u tools/train.py configs/action_tracklets/slowfast/slowfast_frames_ntu_rgb_from_scratch_config.py
