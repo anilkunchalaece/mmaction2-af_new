@@ -16,7 +16,6 @@ import matplotlib
 #                                             top_k_accuracy)
 
 
-
 results_compiled = {
     "configs/action_tracklets/c3d/c3d_frames_ntu_rgb_from_scratch_test_frames_config.py" :
       "cvip_results/c3d_train_frames_test_frames.pkl",
@@ -85,7 +84,38 @@ results_compiled = {
     "cvip_results/slowfast_kintetics_finetune_test_tubelets_50_perc_128x128.pkl",
 
     "configs/action_tracklets/slowfast/slowfast_tubelets_ntu_rgb_transfer_learning_50_perc_data_config_256x256.py" :
-    "cvip_results/slowfast_kintetics_finetune_test_tubelets_50_perc_256x256.pkl"
+    "cvip_results/slowfast_kintetics_finetune_test_tubelets_50_perc_256x256.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_16x16.py" :
+    "cvip_results/i3d_kintetics_finetune_test_tubelets_50_perc_16x16.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_32x32.py" :
+    "cvip_results/i3d_kintetics_finetune_test_tubelets_50_perc_32x32.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_64x64.py" :
+    "cvip_results/i3d_kintetics_finetune_test_tubelets_50_perc_64x64.pkl",
+    
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_128x128.py" :
+    "cvip_results/i3d_kintetics_finetune_test_tubelets_50_perc_128x128.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_transfer_learning_kintetics_50_perc_data_config_256x256.py" :
+    "cvip_results/i3d_kintetics_finetune_test_tubelets_50_perc_256x256.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_config_16x16.py" :
+    "cvip_results/i3d_train_tubelets_test_tubelets_16x16.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_config_32x32.py" :
+    "cvip_results/i3d_train_tubelets_test_tubelets_32x32.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_config_64x64.py" :
+    "cvip_results/i3d_train_tubelets_test_tubelets_64x64.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_config_128x128.py" :
+    "cvip_results/i3d_train_tubelets_test_tubelets_128x128.pkl",
+
+    "configs/action_tracklets/i3d/i3d_tubelets_ntu_rgb_from_scratch_config_256x256.py" :
+    "cvip_results/i3d_train_tubelets_test_tubelets_256x256.pkl",
+
 }
 
 
@@ -124,56 +154,84 @@ def main():
     print(F"Results are saved to {f_to_save}")
 
 def plot_graphs(f_name) :
+    font = {
+        # 'weight' : 'bold',
+        'size'   : 17}
+
+    matplotlib.rc('font', **font)
     with open(f_name) as fd :
         data = json.load(fd)
 
-    tubelets_from_scratch = {}
-    kinetics_pretrain = {}
+    slowfast_tubelets_from_scratch = {}
+    slowfast_kinetics_pretrain = {}
+    i3d_tubelets_from_scratch = {}
+    i3d_kinetics_pretrain = {}
 
     for k,v in data.items() :
+        # print(k)
         if k.find("slowfast_train_tubelets_test_tubelets_") != -1 :
-            tubelets_from_scratch[k.split("_")[-1].replace(".pkl","").split("x")[0]] = v
+            slowfast_tubelets_from_scratch[int(k.split("_")[-1].replace(".pkl","").split("x")[0])] = v
         elif k.find("slowfast_kintetics_finetune_test_tubelets_50_perc_") != -1 :
-            kinetics_pretrain[k.split("_")[-1].replace(".pkl","").split("x")[0]] = v
-    
-    # print(tubelets_from_scratch)
-    # print(kinetics_pretrain)
-    # matplotlib.style.use('ggplot')
-    # matplotlib.rcParams['lines.linestyle'] = '-*'
-    # matplotlib.rcParams['lines.linewidth'] = 1.5
-    # matplotlib.rcParams['figure.facecolor'] = 'yellow'
-    # matplotlib.rcParams['axes.facecolor'] = 'lightblue'
-    # matplotlib.rcParams['font.family'] = 'serif'
-    # matplotlib.rcParams['font.size'] = 8
-    # matplotlib.rcParams['font.weight'] = 'bold'
-    # matplotlib.rcParams['text.color'] = 'red'
+            slowfast_kinetics_pretrain[int(k.split("_")[-1].replace(".pkl","").split("x")[0])] = v
+        elif k.find("i3d_train_tubelets_test_tubelets_") != -1 :
+            i3d_tubelets_from_scratch[int(k.split("_")[-1].replace(".pkl","").split("x")[0])] = v
+        elif k.find("i3d_kintetics_finetune_test_tubelets_50_perc_") != -1 :
+            # print(k)
+            i3d_kinetics_pretrain[int(k.split("_")[-1].replace(".pkl","").split("x")[0])] = v    
 
-    fig, ax = plt.subplots()  # Adjust figure size as per your paper requirements
-    df = pd.DataFrame.from_dict(tubelets_from_scratch,orient='index')
-    # print(df.columns)
-    df = df.rename(columns={"acc/top1": "top1", "acc/top3": "top3", "acc/mean1":"mAcc"})
-    df = df.drop(["16"])
-    df[["top1","top3"]].plot(kind='line', title="Tubelets from scratch",ax=ax, linewidth=2.5, marker="*", markersize=10)
-    # df.plot(kind='scatter', )
-    # ax.grid(True, linestyle="--", alpha=0.5)
-    # ax.set_ylim([0.7,1])
-    # plt.xlabel("Image size")
 
-    # fig2, ax2 = plt.subplots()  # Adjust figure size as per your paper requirements
-    df = pd.DataFrame.from_dict(kinetics_pretrain,orient='index')
-    df = df.drop(["16"])
-    # print(df.columns)
+    fig, ax = plt.subplots(num="SlowFast")  # Adjust figure size as per your paper requirements
+
+    df = pd.DataFrame.from_dict(slowfast_tubelets_from_scratch,orient='index')
+    df = df.sort_index()
+    print(df)
     df = df.rename(columns={"acc/top1": "top1", "acc/top3": "top3", "acc/mean1":"mAcc"})
-    df[["top1","top3"]].plot(kind='line', title="Kinetics pretrained",ax=ax, linewidth=2.5, marker="o", markersize=10)
+    # df = df.drop(["16"])
+    df[["top1"]].plot(kind='line',ax=ax, linewidth=3, marker="*", markersize=8,linestyle="--", color='green')
+    df[["top3"]].plot(kind='line',ax=ax, linewidth=3, marker="o", markersize=8, linestyle="-.", color='green')
+
+    df = pd.DataFrame.from_dict(slowfast_kinetics_pretrain,orient='index')
+    # df = df.drop(["16"])
+    df = df.sort_index()
+    print(df)
+    df = df.rename(columns={"acc/top1": "top1", "acc/top3": "top3", "acc/mean1":"mAcc"})
+    df[["top1"]].plot(kind='line',ax=ax, linewidth=2.25, marker="*", markersize=8,linestyle="--", color='orange')
+    df[["top3"]].plot(kind='line',ax=ax, linewidth=2.25, marker="o", markersize=8, linestyle="-.", color='orange')
     # df.plot(kind='scatter', )
     ax.grid(True, linestyle="--", alpha=0.5)
     # ax.set_ylim([0.6,1])
     plt.xlabel("Image size")
+    plt.legend(["tubelets-top1","tubelets-top3","pt-large-top1","pt-large-top3"])
+    # plt.title("SlowFast")
+
+
+    fig, ax = plt.subplots(num="I3D")  # Adjust figure size as per your paper requirements
+    df = pd.DataFrame.from_dict(i3d_tubelets_from_scratch,orient='index')
+    df = df.sort_index()
+    print(df)
+    df = df.rename(columns={"acc/top1": "top1", "acc/top3": "top3", "acc/mean1":"mAcc"})
+    
+    # df = df.drop(["16"])
+    df[["top1"]].plot(kind='line',ax=ax, linewidth=2.25, marker="*", markersize=8,linestyle="--", color='green')
+    df[["top3"]].plot(kind='line',ax=ax, linewidth=2.25, marker="o", markersize=8, linestyle="-.", color='green')
+
+    df = pd.DataFrame.from_dict(i3d_kinetics_pretrain,orient='index')
+    df = df.sort_index()
+    print(df)
+    # df = df.drop(["16"])
+    df = df.rename(columns={"acc/top1": "top1", "acc/top3": "top3", "acc/mean1":"mAcc"})
+    df[["top1"]].plot(kind='line',ax=ax, linewidth=2.25, marker="*", markersize=8,linestyle="--", color='orange')
+    df[["top3"]].plot(kind='line',ax=ax, linewidth=2.25, marker="o", markersize=8, linestyle="-.", color='orange')
+    # df.plot(kind='scatter', )
+    ax.grid(True, linestyle="--", alpha=0.5)
+    # ax.set_ylim([0.6,1])
+    plt.xlabel("Image size")
+    plt.legend(["tubelets-top1","tubelets-top3","pt-large-top1","pt-large-top3"])
 
     plt.show()
     
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     plot_graphs("cvip_results.json")
