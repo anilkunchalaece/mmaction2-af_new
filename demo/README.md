@@ -284,7 +284,7 @@ Optional arguments:
 - `HUMAN_DETECTION_CATEGORY_ID`: The category id for human detection. Defaults to 0.
 - `ACTION_DETECTION_SCORE_THRESHOLD`: The score threshold for action detection. Defaults to 0.5.
 - `LABEL_MAP`: The label map used. Defaults to `tools/data/ava/label_map.txt`.
-- `DEVICE`: Type of device to run the demo. Allowed values are cuda device like `cuda:0` or `cpu`.  Defaults to `cuda:0`.
+- `DEVICE`: Type of device to run the demo. Allowed values are cuda devic>e like `cuda:0` or `cpu`.  Defaults to `cuda:0`.
 - `SHORT_SIDE`: The short side used for frame extraction. Defaults to 256.
 - `PREDICT_STEPSIZE`: Make a prediction per N frames.  Defaults to 8.
 - `OUTPUT_STEPSIZE`: Output 1 frame per N frames in the input video. Note that `PREDICT_STEPSIZE % OUTPUT_STEPSIZE == 0`. Defaults to 4.
