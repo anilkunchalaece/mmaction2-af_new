@@ -2,17 +2,17 @@ _base_ = [
     '../../_base_/models/slowfast_r50.py', '../../_base_/default_runtime.py'
 ]
 
-samples_per_cls = [11056,3540,5196,11968,3351,6669,8444]
+samples_per_cls = [49, 15, 48, 1056, 16, 23, 35, 6, 53, 12, 17, 46, 11, 21, 635, 849, 42, 27, 38]
 
 #dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/train'
-data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test'
+data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/train'
+data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/train_annotation.txt'
-ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test_annotation.txt'
-ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test_annotation.txt'
+ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/train_annotation.txt'
+ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test_annotation.txt'
+ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test_annotation.txt'
 
 # model settings
 model = dict(
@@ -47,7 +47,7 @@ model = dict(
     cls_head=dict(
         type='SlowFastHead',
         in_channels=2304,  # 2048+256
-        num_classes=7,
+        num_classes=19,
         spatial_type='avg',
         dropout_ratio=0.5,
         average_clips='prob',
@@ -64,7 +64,7 @@ train_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='RandomResizedCrop'),
-    dict(type='Resize', scale=(32, 64), keep_ratio=True),
+    dict(type='Resize', scale=(8, 8), keep_ratio=False),
     dict(type='Flip', flip_ratio=0.5),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
@@ -79,7 +79,7 @@ val_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='CenterCrop', crop_size=224),
-    dict(type='Resize', scale=(32, 64), keep_ratio=True),
+    dict(type='Resize', scale=(8, 8), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -93,7 +93,7 @@ test_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='ThreeCrop', crop_size=256),
-    dict(type='Resize', scale=(32, 64), keep_ratio=True),
+    dict(type='Resize', scale=(8, 8), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -161,3 +161,6 @@ param_scheduler = [
 
 default_hooks = dict(
     checkpoint=dict(interval=4, max_keep_ckpts=3), logger=dict(interval=100))
+
+load_from = "/home/ICTDOMAIN/d20125529/mmaction2-af_new/work_dirs/slowfast_tubelet_dataset_focal_loss_config/best_acc_top1_epoch_36.pth"
+resume = True

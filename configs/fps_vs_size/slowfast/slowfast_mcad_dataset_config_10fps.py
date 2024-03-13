@@ -2,17 +2,17 @@ _base_ = [
     '../../_base_/models/slowfast_r50.py', '../../_base_/default_runtime.py'
 ]
 
-root_dir = "/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/TUBELET_DATASET_FINAL_ORG"
+root_dir = "/home/ICTDOMAIN/d20125529/fps_vs_size/MCAD_FRAMES"
 
 # dataset settings
 dataset_type = 'RawframeDataset'
-data_root = root_dir
-data_root_val = root_dir
-data_root_test = root_dir
+data_root = F"{root_dir}/train"
+data_root_val = F"{root_dir}/test_10fps"
+data_root_test = F"{root_dir}/test_10fps"
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = F"{root_dir}/tubelet_train.txt"
-ann_file_val = F"{root_dir}/tubelet_test.txt"
-ann_file_test = F"{root_dir}/tubelet_test.txt"
+ann_file_train = F"{root_dir}/train_annotations.txt"
+ann_file_val = F"{root_dir}/test_10fps_annotations.txt"
+ann_file_test = F"{root_dir}/test_10fps_annotations.txt"
 
 
 # model settings
@@ -48,7 +48,7 @@ model = dict(
     cls_head=dict(
         type='SlowFastHead',
         in_channels=2304,  # 2048+256
-        num_classes=7,
+        num_classes=18,
         spatial_type='avg',
         dropout_ratio=0.5,
         average_clips='prob'),
@@ -60,7 +60,7 @@ model = dict(
 
 file_client_args = dict(io_backend='disk')
 train_pipeline = [
-    dict(type='SampleFrames', clip_len=32, frame_interval=2, num_clips=1),
+    dict(type='SampleFrames', clip_len=16, frame_interval=2, num_clips=1),
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='RandomResizedCrop'),
@@ -72,7 +72,7 @@ train_pipeline = [
 val_pipeline = [
     dict(
         type='SampleFrames',
-        clip_len=32,
+        clip_len=16,
         frame_interval=2,
         num_clips=1,
         test_mode=True),
@@ -86,7 +86,7 @@ val_pipeline = [
 test_pipeline = [
     dict(
         type='SampleFrames',
-        clip_len=32,
+        clip_len=16,
         frame_interval=2,
         num_clips=10,
         test_mode=True),
@@ -161,3 +161,5 @@ param_scheduler = [
 
 default_hooks = dict(
     checkpoint=dict(interval=4, max_keep_ckpts=3), logger=dict(interval=100))
+
+load_from = "https://download.openmmlab.com/mmaction/v1.0/recognition/slowfast/slowfast_r50_8xb8-4x16x1-256e_kinetics400-rgb/slowfast_r50_8xb8-4x16x1-256e_kinetics400-rgb_20220901-701b0f6f.pth"

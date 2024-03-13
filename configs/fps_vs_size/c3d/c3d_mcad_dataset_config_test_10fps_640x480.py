@@ -3,17 +3,17 @@ _base_ = [
     '../../_base_/default_runtime.py'
 ]
 
-root_dir = "/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/TUBELET_DATASET_FINAL_ORG"
+root_dir = "/home/ICTDOMAIN/d20125529/fps_vs_size/MCAD_FRAMES"
 
 # dataset settings
 dataset_type = 'RawframeDataset'
-data_root = root_dir
-data_root_val = root_dir
-data_root_test = root_dir
+data_root = F"{root_dir}/train"
+data_root_val = F"{root_dir}/test_10fps_640x480"
+data_root_test = F"{root_dir}/test_10fps_640x480"
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = F"{root_dir}/tubelet_train.txt"
-ann_file_val = F"{root_dir}/tubelet_test.txt"
-ann_file_test = F"{root_dir}/tubelet_test.txt"
+ann_file_train = F"{root_dir}/train_annotations.txt"
+ann_file_val = F"{root_dir}/test_10fps_640x480_annotations.txt"
+ann_file_test = F"{root_dir}/test_10fps_640x480_annotations.txt"
 
 
 # model settings
@@ -30,7 +30,7 @@ model = dict(
         init_std=0.005),
     cls_head=dict(
         type='I3DHead',
-        num_classes=7, # changed the no of classes 101 (UCF-101) to 6 (KTH)
+        num_classes=18, # changed the no of classes 101 (UCF-101) to 6 (KTH)
         in_channels=4096,
         spatial_type=None,
         dropout_ratio=0.5,

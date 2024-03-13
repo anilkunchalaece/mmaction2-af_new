@@ -3,17 +3,17 @@ _base_ = [
     '../../_base_/default_runtime.py'
 ]
 
-samples_per_cls = [11056,3540,5196,11968,3351,6669,8444]
+samples_per_cls = [49, 15, 48, 1056, 16, 23, 35, 6, 53, 12, 17, 46, 11, 21, 635, 849, 42, 27, 38]
 
 # dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/train'
-data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test'
+data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/train'
+data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test'
+data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/train_annotation.txt'
-ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test_annotation.txt'
-ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test_annotation.txt'
+ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/train_annotation.txt'
+ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test_annotation.txt'
+ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/VIRAT_FULL_Dataset_Selected_18_Classes/test_annotation.txt'
 
 
 # model settings
@@ -33,7 +33,7 @@ model = dict(
         zero_init_residual=False),
     cls_head=dict(
         type='I3DHead',
-        num_classes=7,
+        num_classes=19,
         in_channels=2048,
         spatial_type='avg',
         dropout_ratio=0.5,
@@ -59,7 +59,7 @@ train_pipeline = [
     #     scales=(1, 0.8),
     #     random_crop=False,
     #     max_wh_scale_gap=0),
-    dict(type='Resize', scale=(32,  32), keep_ratio=False),
+    dict(type='Resize', scale=(32, 32), keep_ratio=False),
     dict(type='Flip', flip_ratio=0.5),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
@@ -74,7 +74,7 @@ val_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='CenterCrop', crop_size=224),
-    dict(type='Resize', scale=(32,  32), keep_ratio=False),
+    dict(type='Resize', scale=(32, 32), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -88,7 +88,7 @@ test_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='ThreeCrop', crop_size=256),
-    dict(type='Resize', scale=(32,  32), keep_ratio=False),
+    dict(type='Resize', scale=(32, 32), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -143,4 +143,5 @@ default_hooks = dict(checkpoint=dict(interval=5, max_keep_ckpts=5))
 #   - `base_batch_size` = (8 GPUs) x (8 samples per GPU).
 auto_scale_lr = dict(enable=False, base_batch_size=240)
 
+# load_from = "/home/ICTDOMAIN/d20125529/mmaction2-af_new/work_dirs/slowfast_tubelet_dataset_focal_loss_config/best_acc_top1_epoch_36.pth"
 load_from = "https://download.openmmlab.com/mmaction/v1.0/recognition/i3d/i3d_imagenet-pretrained-r50_8xb8-32x2x1-100e_kinetics400-rgb/i3d_imagenet-pretrained-r50_8xb8-32x2x1-100e_kinetics400-rgb_20220812-e213c223.pth"
