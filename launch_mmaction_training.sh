@@ -1,12 +1,14 @@
 #!/bin/sh
 
-#SBATCH --job-name=MMACT_SF
+#SBATCH --job-name=VIR_CT
 #SBATCH --mem=60000
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=6
 #SBATCH --gres=gpu:1
-#SBATCH --output=sf_focal.log
-#SBATCH --error=sf_focal.log
+#SBATCH --output=i3d_pt.log
+#SBATCH --error=i3d_pt.log
 #SBATCH --partition=LARGE-G2
+#SBATCH --ntasks=1
+#SBATCH --ntasks-per-node=1
 
 # source /home/ICTDOMAIN/d20125529/action_tracklet_parser/venv/bin/activate
 . /home/ICTDOMAIN/d20125529/action_tracklet_parser/venv3_8/bin/activate
@@ -27,13 +29,226 @@ which python
 #     tsn_imagenet-pretrained-r50_8xb32-1x1x8-100e_kinetics400-rgb_20220906-2692d16c.pth \
 #     demo/demo.mp4 tools/data/kinetics/label_map_k400.txt
 
+###### VIRAT Selected Dataset  Test ####
+## I3D
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config_8x8.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config_16x16.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config_32x32.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config_64x64.py
+
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_kinetic_pretrained_config.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_kinetic_pretrained_config_8x8.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_kinetic_pretrained_config_16x16.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_kinetic_pretrained_config_32x32.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_kinetic_pretrained_config_64x64.py
+
+
+## SlowFast
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config.py \
+#     /work_dirs/slowfast_virat_selected_dataset_focal_loss_config/best_acc_top1_epoch_44.pth \
+#     --dump sf_virat_selected.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config/best_acc_top1_epoch_44.pth \
+#     --dump sf_virat_selected_pretrained.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_8x8.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_config_8x8/best_acc_top1_epoch_44.pth \
+#     --dump sf_virat_selected_8x8.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_8x8.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_8x8/best_acc_top1_epoch_8.pth \
+#     --dump sf_virat_selected_pretrained_8x8.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_16x16.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_config_16x16/best_acc_top1_epoch_42.pth \
+#     --dump sf_virat_selected_16x16.pkl
+
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_16x16.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_16x16/best_acc_top1_epoch_38.pth \
+#     --dump sf_virat_selected_pretrained_16x16.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_32x32.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_config_32x32/best_acc_top1_epoch_44.pth \
+#     --dump sf_virat_selected_32x32.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_32x32.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_32x32/best_acc_top1_epoch_30.pth \
+#     --dump sf_virat_selected_pretrained_32x32.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_64x64.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_config_64x64/best_acc_top1_epoch_36.pth \
+#     --dump sf_virat_selected_64x64.pkl
+
+# python -u tools/test.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_64x64.py \
+#     work_dirs/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_64x64/best_acc_top1_epoch_38.pth \
+#     --dump sf_virat_selected_pretrained_64x64.pkl
+
+
+
+
 ######### Tubelet Dataset ########
 # python -u tools/train.py configs/tubelet_dataset/c3d/c3d_tubelet_dataset_config.py
 # python -u tools/train.py configs/tubelet_dataset/c3d/c3d_tubelet_dataset_focal_loss_config.py
 # python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_config.py
-python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_config.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config.py
 # python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_config.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_config.py
 
+# python -u tools/train.py configs/tubelet_dataset/c3d/c3d_tubelet_dataset_focal_loss_kinetic_pretrained_config.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_kinetics_pretrained_config.py
+
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_32x32.py
+
+## I3D
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_config_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_config_16x16.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_config_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_config_64x64.py
+
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_kinetics_pretrained_config_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_kinetics_pretrained_config_16x16.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_kinetics_pretrained_config_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_kinetics_pretrained_config_64x64.py
+
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config_2s_dataset.py
+
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_complete_focal_loss_config.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config.py
+
+## VIRAT ALL PERSON CLASSES
+# python -u tools/train.py configs/virat_all_person/i3d/i3d_virat_all_person_dataset_focal_loss_config.py
+python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_complete_focal_loss_config.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_complete_focal_loss_kinetic_pretrained_config.py
+
+## VIDEO SWIN MODEL
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_config.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_kinetic_pretrained.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_config.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_kinetic_pretrained_config.py
+
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_config_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_config_16x16.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_config_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_config_64x64.py
+
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_kinetic_pretrained_config_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_kinetic_pretrained_config_16x16.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_kinetic_pretrained_config_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/videoswin/swin_tubelet_dataset_focal_loss_kinetic_pretrained_config_64x64.py
+
+
+## TRANSFORMER MODEL
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_kinetic_pretrained.py
+
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_16x16.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_64x64.py
+
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_kinetic_pretrained_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_kinetic_pretrained_16x16.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_kinetic_pretrained_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss_kinetic_pretrained_64x64.py
+
+
+# python -u tools/train.py configs/tubelet_dataset/timesformer/timesformer_tubelet_dataset_focal_loss.py
+
+
+## TESTIN
+
+# python -u tools/test.py /home/ICTDOMAIN/d20125529/mmaction2-af_new/work_dirs/slowfast_tubelet_dataset_focal_loss_config/slowfast_tubelet_dataset_focal_loss_config.py \
+#     /home/ICTDOMAIN/d20125529/mmaction2-af_new/work_dirs/slowfast_tubelet_dataset_focal_loss_config/best_acc_top1_epoch_36.pth \
+#     --dump sf_tubelet.pkl
+
+#python -u tools/test.py /home/ICTDOMAIN/d20125529/mmaction2-af_new/work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config.py \
+#    /home/ICTDOMAIN/d20125529/mmaction2-af_new/work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config/best_acc_top1_epoch_34.pth
+#    --dump sf_tubelet_pretrained.pkl
+
+# python -u tools/test.py work_dirs/slowfast_tubelet_dataset_focal_loss_config_32x32/slowfast_tubelet_dataset_focal_loss_config_32x32.py \
+#     work_dirs/slowfast_tubelet_dataset_focal_loss_config_32x32/best_acc_top1_epoch_42.pth \
+#     --dump sf_tubelet_32x32.pkl
+
+# python -u tools/test.py work_dirs/slowfast_tubelet_dataset_focal_loss_config_64x64/slowfast_tubelet_dataset_focal_loss_config_64x64.py \
+#     work_dirs/slowfast_tubelet_dataset_focal_loss_config_64x64/best_acc_top1_epoch_44.pth \
+#     --dump sf_tubelet_64x64.pkl
+
+# python -u tools/test.py work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_32x32/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_32x32.py \
+#     work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_32x32/best_acc_top1_epoch_42.pth \
+#     --dump sf_tubelet_pretrained_32x32.pkl
+
+# python -u tools/test.py work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_64x64/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_64x64.py \
+#     work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_64x64/best_acc_top1_epoch_42.pth \
+#     --dump sf_tubelet_pretrained_64x64.pkl
+
+
+# python -u tools/test.py work_dirs/slowfast_tubelet_dataset_focal_loss_config_8x8/slowfast_tubelet_dataset_focal_loss_config_8x8.py \
+#     work_dirs/slowfast_tubelet_dataset_focal_loss_config_8x8/best_acc_top1_epoch_44.pth \
+#     --dump sf_tubelet_8x8.pkl
+
+# python -u tools/test.py work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_8x8/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_8x8.py \
+#     work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_8x8/best_acc_top1_epoch_42.pth \
+#     --dump sf_tubelet_pretrained_8x8.pkl
+
+# python -u tools/test.py work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_16x16/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_16x16.py \
+#     work_dirs/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_16x16/best_acc_top1_epoch_42.pth \
+#     --dump sf_tubelet_pretrained_16x16.pkl
+
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_64x64.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_64x64.py
+
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_32x64.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_64x128.py
+
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_config_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_config_64x64.py
+
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_kinetics_pretrained_config_32x32.py
+# python -u tools/train.py configs/tubelet_dataset/i3d/i3d_tubelet_dataset_focal_loss_kinetics_pretrained_config_64x64.py
+
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_16x16.py
+
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_8x8.py
+# python -u tools/train.py configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_16x16.py
+
+# python -u tools/train.py configs/virat_selected/c3d/c3d_virat_selected_dataset_config.py
+# python -u tools/train.py configs/virat_selected/c3d/c3d_virat_selected_dataset_focal_loss_config.py
+# python -u tools/train.py configs/virat_selected/c3d/c3d_virat_selected_dataset_focal_loss_kinetic_pretrained_config.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_config.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_32x32.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_64x64.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_32x32.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_64x64.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_8x8.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_16x16.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_8x8.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_kinetic_pretrained_config_16x16.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_pt_8x8__8x8.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_pt_16x16_16x16.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_pt_32x32_32x32.py
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_pt_64x64_64x64.py
+
+# python -u tools/train.py configs/virat_selected/slowfast/slowfast_virat_selected_dataset_focal_loss_config_kinetic_pt_64x64_64x64.py
+
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_config.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_config.py
+# python -u tools/train.py configs/virat_selected/i3d/i3d_virat_selected_dataset_focal_loss_kinetic_pretrained_config.py
 
 ######### BBOX VARIATIONS ########
 # python -u tools/train.py configs/bbox_variations/slowfast/slowfast_frames_ntu_rgb_from_scratch_config.py

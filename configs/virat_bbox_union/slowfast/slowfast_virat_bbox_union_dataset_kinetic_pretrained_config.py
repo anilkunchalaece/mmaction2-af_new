@@ -2,17 +2,16 @@ _base_ = [
     '../../_base_/models/slowfast_r50.py', '../../_base_/default_runtime.py'
 ]
 
-samples_per_cls = [11056,3540,5196,11968,3351,6669,8444]
-
 #dataset settings
 dataset_type = 'RawframeDataset'
-data_root = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/train'
-data_root_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test'
-data_root_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test'
+data_root = '/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/Act_Tubelet_Dataset'
+data_root_val = '/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/Act_Tubelet_Dataset'
+data_root_test = '/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/Act_Tubelet_Dataset'
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
-ann_file_train = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/train_annotation.txt'
-ann_file_val = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test_annotation.txt'
-ann_file_test = '/home/ICTDOMAIN/d20125529/action_tracklet_parser/Tubelet_Dataset/test_annotation.txt'
+ann_file_train = '/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/Act_Tubelet_Dataset/train_filtered.txt'
+ann_file_val = '/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/Act_Tubelet_Dataset/test_filtered.txt'
+ann_file_test = '/home/ICTDOMAIN/d20125529/act_tubelet_dataset_gen/Act_Tubelet_Dataset/test_filtered.txt'
+
 
 # model settings
 model = dict(
@@ -47,11 +46,12 @@ model = dict(
     cls_head=dict(
         type='SlowFastHead',
         in_channels=2304,  # 2048+256
-        num_classes=7,
+        num_classes=25,
         spatial_type='avg',
         dropout_ratio=0.5,
         average_clips='prob',
-        loss_cls=dict(type='CBFocalLoss', samples_per_cls=samples_per_cls)),
+        # loss_cls=dict(type='CBFocalLoss', samples_per_cls=samples_per_cls)
+        ),
     data_preprocessor=dict(
         type='ActionDataPreprocessor',
         mean=[123.675, 116.28, 103.53],
@@ -64,7 +64,7 @@ train_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='RandomResizedCrop'),
-    dict(type='Resize', scale=(8,  8), keep_ratio=False),
+    dict(type='Resize', scale=(224, 224), keep_ratio=False),
     dict(type='Flip', flip_ratio=0.5),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
@@ -79,7 +79,7 @@ val_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='CenterCrop', crop_size=224),
-    dict(type='Resize', scale=(8,  8), keep_ratio=False),
+    dict(type='Resize', scale=(224, 224), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -93,7 +93,7 @@ test_pipeline = [
     dict(type='RawFrameDecode', **file_client_args),
     # dict(type='Resize', scale=(-1, 256)),
     # dict(type='ThreeCrop', crop_size=256),
-    dict(type='Resize', scale=(8,  8), keep_ratio=False),
+    dict(type='Resize', scale=(224, 224), keep_ratio=False),
     dict(type='FormatShape', input_format='NCTHW'),
     dict(type='PackActionInputs')
 ]
@@ -139,7 +139,7 @@ val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=1e-4),
+    optimizer=dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=1e-4),
     clip_grad=dict(max_norm=40, norm_type=2))
 
 param_scheduler = [
