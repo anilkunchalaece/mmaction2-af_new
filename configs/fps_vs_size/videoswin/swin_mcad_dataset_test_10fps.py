@@ -7,12 +7,12 @@ root_dir = "/home/ICTDOMAIN/d20125529/fps_vs_size/MCAD_FRAMES"
 # dataset settings
 dataset_type = 'RawframeDataset'
 data_root = F"{root_dir}/train"
-data_root_val = F"{root_dir}/test"
-data_root_test = F"{root_dir}/test"
+data_root_val = F"{root_dir}/test_10fps"
+data_root_test = F"{root_dir}/test_10fps"
 split = 1  # official train/test splits. valid numbers: 1, 2, 3
 ann_file_train = F"{root_dir}/train_annotations.txt"
-ann_file_val = F"{root_dir}/test_annotations.txt"
-ann_file_test = F"{root_dir}/test_annotations.txt"
+ann_file_val = F"{root_dir}/test_10fps_annotations.txt"
+ann_file_test = F"{root_dir}/test_10fps_annotations.txt"
 
 
 model = dict(
