@@ -2,7 +2,7 @@ _base_ = [
     '../../_base_/models/swin_tiny.py', '../../_base_/default_runtime.py'
 ]
 
-root_dir = "/home/ICTDOMAIN/d20125529/fps_vs_size/MCAD_FRAMES"
+root_dir = "/home/ICTDOMAIN/d20125529/fps_vs_size/MMAct_FRAMES"
 
 # dataset settings
 dataset_type = 'RawframeDataset'
@@ -20,7 +20,7 @@ model = dict(
         pretrained='https://download.openmmlab.com/mmaction/v1.0/recognition/swin/swin_tiny_patch4_window7_224.pth'  # noqa: E501
     ),
     cls_head=dict(
-        num_classes = 18,
+        num_classes = 37,
     ))
 
 file_client_args = dict(io_backend='disk')
