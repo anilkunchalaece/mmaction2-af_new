@@ -11,6 +11,10 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
+import pickle
+from sklearn.metrics import accuracy_score
+import numpy as np
+
 # from mmaction.evaluation.functional import (get_weighted_score,
 #                                             mean_class_accuracy,
 #                                             top_k_accuracy)
@@ -120,13 +124,87 @@ results_compiled = {
 
 
 
+tubelet_results_compiled = {
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config.py" :
+      "tubelet_dataset_results/sf_tubelet.pkl",
+    
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_8x8.py" : 
+        "tubelet_dataset_results/sf_tubelet_8x8.pkl",
+
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_32x32.py" : 
+        "tubelet_dataset_results/sf_tubelet_32x32.pkl",
+
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_config_64x64.py" :
+         "tubelet_dataset_results/sf_tubelet_64x64.pkl",
+    
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_8x8.py" :
+         "tubelet_dataset_results/sf_tubelet_pretrained_8x8.pkl",
+    
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_16x16.py" :
+         "tubelet_dataset_results/sf_tubelet_pretrained_16x16.pkl",
+    
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_32x32.py" :
+         "tubelet_dataset_results/sf_tubelet_pretrained_32x32.pkl",
+    
+    "configs/tubelet_dataset/slowfast/slowfast_tubelet_dataset_focal_loss_kinetic_pretrained_config_64x64.py" :
+         "tubelet_dataset_results/sf_tubelet_pretrained_64x64.pkl"
+}
+
+TUBELET_LABAL_MATCHER = [
+    "WALKING", 
+    "RUNNING",
+    "SITTING",
+    "STANDING",
+    "GESTURING",
+    "CARRYING",
+    "USING_PHONE"
+]
+
+def calculate_class_wise_accuracy(predictions_file, num_classes):
+    # Load the pkl file with predictions
+    with open(predictions_file, 'rb') as f:
+        predictions = pickle.load(f)
+
+    # Initialize lists to store true and predicted labels
+    true_labels = []
+    predicted_labels = []
+
+    # Extract true and predicted labels from the predictions
+    for prediction in predictions:
+        true_label = prediction['gt_labels']['item'].item()
+        predicted_label = prediction['pred_labels']['item'].item()
+        true_labels.append(true_label)
+        predicted_labels.append(predicted_label)
+
+    # Calculate overall accuracy
+    overall_accuracy = accuracy_score(true_labels, predicted_labels)
+
+    # Initialize dictionary to store class-wise accuracy
+    class_accuracy = {}
+
+    # Calculate class-wise accuracy
+    for class_id in range(num_classes):
+        class_indices = [i for i, true_label in enumerate(true_labels) if true_label == class_id]
+        class_true_labels = [true_labels[i] for i in class_indices]
+        class_predicted_labels = [predicted_labels[i] for i in class_indices]
+
+        if len(class_indices) > 0:
+            class_accuracy[TUBELET_LABAL_MATCHER[class_id]] = accuracy_score(class_true_labels, class_predicted_labels)
+        else:
+            class_accuracy[TUBELET_LABAL_MATCHER[class_id]] = 0.0
+
+    return overall_accuracy, class_accuracy
+
 
 def main():
     
     results = {}
 
-    for config, pkl_results in results_compiled.items() :
-
+    for config, pkl_results in tubelet_results_compiled.items() :
+        results[os.path.basename(pkl_results)] = {
+            "average" : {},
+            "class_wise" : {}
+        }
         # # load config
         cfg = Config.fromfile(config)
 
@@ -145,9 +223,14 @@ def main():
         eval_results = evaluator.offline_evaluate(data_samples)
         print(os.path.basename(pkl_results),eval_results)
 
-        results[os.path.basename(pkl_results)] = eval_results
-    
-    f_to_save = "cvip_results.json"
+        results[os.path.basename(pkl_results)]["average"] = eval_results
+        no_of_classes = 7
+        cls_wise_acc = calculate_class_wise_accuracy(pkl_results,no_of_classes)
+        results[os.path.basename(pkl_results)]["class_wise"] = cls_wise_acc
+        print(cls_wise_acc)
+        print("### \n")
+        # return
+    f_to_save = "tubelet_results.json"
     with open(f_to_save,'w') as fw :
         json.dump(results,fw)
     
@@ -234,4 +317,4 @@ def plot_graphs(f_name) :
 
 if __name__ == '__main__':
     main()
-    plot_graphs("cvip_results.json")
+    # plot_graphs("cvip_results.json")
