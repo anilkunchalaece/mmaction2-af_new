@@ -14,7 +14,7 @@ ann_file_test = F"{root_dir}/tubelet_test.txt"
 
 model = dict(
             backbone=dict(attention_type='divided_space_time',
-            pretrained=None),
+            # pretrained='https://download.openmmlab.com/mmaction/recognition/timesformer/vit_base_patch16_224.pth'),
             cls_head=dict(
                 num_classes = 7            
                 ))
@@ -107,4 +107,4 @@ train_cfg = dict(
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 
-load_from=None
+# load_from='https://download.openmmlab.com/mmaction/v1.0/recognition/timesformer/timesformer_divST_8xb8-8x32x1-15e_kinetics400-rgb/timesformer_divST_8xb8-8x32x1-15e_kinetics400-rgb_20220815-a4d0d01f.pth'
